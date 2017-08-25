@@ -1,0 +1,4 @@
+venv/
+SECRETS.py
+__pycache__
+raid_status.json
