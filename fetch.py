@@ -33,7 +33,7 @@ def filter_old_raids(raids, filename='raid_status.json'):
     except FileNotFoundError:
         print("Found no previous raid data. Creating now.")
         # If the file does not exist save the raid data
-        raid_data = {raid_data[raid["gym_id"]]: raid["time"] for raid in raids}
+        raid_data = {raid["gym_id"]: raid["time"] for raid in raids}
 
     # Re-save the new raid_data
     with open(filename, "w") as f:
