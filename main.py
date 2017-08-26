@@ -1,5 +1,8 @@
 import traceback
 
+import os
+import time
+
 from fbchat import Client
 
 from fetch import get_all_raids
@@ -32,4 +35,6 @@ def send_all():
 
 
 if __name__ == "__main__":
+    os.environ['TZ'] = 'Europe/Ljubljana'
+    time.tzset()
     send_all()
