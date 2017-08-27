@@ -28,9 +28,9 @@ def send_all():
             client.sendMessage(raid["message"], **SECRETS.CHAT)
     except Exception as e:
         exc = traceback.format_exc()
-        print("Go map Messenger failed")
+        print("GoMap Messenger failed")
         print(exc)
-        client.sendMessage("Comic sender failed. Sorry.", **SECRETS.ADMIN)
+        client.sendMessage("GoMap Messenger sender failed. Sorry.", **SECRETS.ADMIN)
         client.sendMessage(exc, **SECRETS.ADMIN)
 
 

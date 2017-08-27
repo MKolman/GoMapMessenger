@@ -74,11 +74,10 @@ def get_all_raids(min_lvl=5):
 
 def make_message(raid):
     teams = {0: "None", 1: "Mystic", 2: "Valor", 3: "Instinct"}
-    return """New lvl {} raid
-Raid Boss: {}
-Gym: {} ({})
-Until: {}
-Location: {}
-👍 if you are interested""".format(
-        raid['lvl'], raid['pokemon']['name'].upper(), raid['gym_name'],
-        teams[raid['team']], raid['until'].time(), raid['location'])
+    return """{pokemon_name} raid pri {gym_name} ({team_name}) do {clock}
+Google maps: {location}
+Če te zanima daj 👍""".format(
+        pokemon_name=raid['pokemon']['name'],
+        clock=raid['until'].time(),
+        team_name=teams[raid['team']],
+        **raid)
