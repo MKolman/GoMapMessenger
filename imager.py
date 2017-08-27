@@ -8,6 +8,8 @@ def make_image(raid):
     pokemon = staticmap.IconMarker((lon, lat), "./img/pkmn/{}.png".format(
                                    raid["pokemon"]["id"]), 60, 60)
     m.add_marker(pokemon)
+    marker = staticmap.CircleMarker((lon, lat), "black", 12)
+    m.add_marker(marker)
     marker = staticmap.CircleMarker((lon, lat), team_colors[raid["team"]], 10)
     m.add_marker(marker)
     img = m.render(zoom=16)
