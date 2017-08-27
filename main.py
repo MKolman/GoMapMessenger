@@ -35,6 +35,6 @@ def send_all():
 
 
 if __name__ == "__main__":
-    os.environ['TZ'] = 'Europe/Ljubljana'
+    os.environ['TZ'] = SECRETS.TIMEZONE
     time.tzset()
     send_all()
