@@ -2,3 +2,4 @@ venv/
 SECRETS.py
 __pycache__
 raid_status.json
+/img/tmp_raid.png
