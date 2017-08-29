@@ -74,9 +74,10 @@ def get_all_raids(min_lvl=5):
 
 def make_message(raid):
     teams = {0: "None", 1: "Mystic", 2: "Valor", 3: "Instinct"}
-    return """{pokemon_name} raid pri {gym_name} ({team_name}) do {clock}
+    return """{pokemon_name} raid pri {gym_name} ({team_name}{gym_bonus}) do {clock}
 Google maps: {location}
 Če te zanima daj 👍""".format(
+        gym_bonus=" +2 žogi" if len(raid["gym"]["memb"]) == 6 else "",
         pokemon_name=raid['pokemon']['name'],
         clock=raid['until'].time(),
         team_name=teams[raid['team']],
