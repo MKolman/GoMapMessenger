@@ -3,10 +3,10 @@ import staticmap
 
 def make_image(raid):
     team_colors = ["#e5e5e5", "#0576ee", "#f2160a", "#fad107"]
-    lon, lat = raid["gym"]["longitude"], raid["gym"]["latitude"]
+    lon, lat = raid["lon"], raid["lat"]
     m = staticmap.StaticMap(800, 300)
     pokemon = staticmap.IconMarker((lon, lat), "./img/pkmn/{}.png".format(
-                                   raid["pokemon"]["id"]), 60, 60)
+                                   raid["pokemon_id"]), 60, 60)
     m.add_marker(pokemon)
     marker = staticmap.CircleMarker((lon, lat), "black", 12)
     m.add_marker(marker)

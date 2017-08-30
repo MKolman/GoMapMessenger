@@ -5,7 +5,7 @@ import time
 
 from fbchat import Client
 
-from fetch import get_all_raids
+from fetch import get_all_results
 from imager import make_image
 import SECRETS
 
@@ -14,9 +14,9 @@ def send_all():
     """ Send all new raids from username to the designated chat in case of error
     inform the admin.
     """
-    all_raids = get_all_raids()
-    if len(all_raids) == 0:
-        print("No new raids right now.")
+    all_results = get_all_results()
+    if len(all_results) == 0:
+        print("No new results right now.")
         return
     try:
         print("Logging in...")
@@ -28,11 +28,11 @@ def send_all():
         print(traceback.format_exc())
         return False
     try:
-        for raid in all_raids:
-            print(raid["message"])
-            make_image(raid)
-            # client.sendMessage(raid["message"], **SECRETS.CHAT)
-            client.sendLocalImage("./img/tmp_raid.png", raid["message"], **SECRETS.CHAT)
+        for result in all_results:
+            print(result["message"])
+            make_image(result)
+            # client.sendMessage(result["message"], **SECRETS.CHAT)
+            client.sendLocalImage("./img/tmp_raid.png", result["message"], **SECRETS.CHAT)
     except Exception as e:
         exc = traceback.format_exc()
         print("GoMap Messenger failed")
