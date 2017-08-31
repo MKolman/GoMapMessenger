@@ -51,7 +51,11 @@ def get_all_results():
         "n": SECRETS.LOCATION_N,
         "s": SECRETS.LOCATION_S,
         "gid": "0"})
-    data = resp.json()
+    try:
+        data = resp.json()
+    except Exception as e:
+        print(resp.content)
+        raise
     result = []
     for gym in data["gyms"]:
         if "rpid" in gym and (gym["lvl"] >= SECRETS.RAIDS["lvl"] or
