@@ -42,7 +42,7 @@ def filter_old_results(results, filename='result_status.json'):
     return new_results
 
 
-def get_all_results(min_lvl=5):
+def get_all_results():
     resp = req.get("https://mapdata2.gomap.eu/mnew.php", params={
         "mid": "0",  # Get full scan
         "ex": "[" + (",".join([str(i) for i in range(1, 251) if i not in SECRETS.POKEMON])) + "]",
@@ -54,7 +54,8 @@ def get_all_results(min_lvl=5):
     data = resp.json()
     result = []
     for gym in data["gyms"]:
-        if "rpid" in gym and gym["lvl"] >= min_lvl:
+        if "rpid" in gym and gym["lvl"] >= SECRETS.RAIDS["lvl"] or \
+                gym["rpid"] in SECRETS.RAID["additional"]:
             result.append({
                 "type": "raid",
                 "lvl": gym["lvl"],
