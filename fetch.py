@@ -54,8 +54,8 @@ def get_all_results():
     data = resp.json()
     result = []
     for gym in data["gyms"]:
-        if "rpid" in gym and gym["lvl"] >= SECRETS.RAIDS["lvl"] or \
-                gym["rpid"] in SECRETS.RAID["additional"]:
+        if "rpid" in gym and (gym["lvl"] >= SECRETS.RAIDS["lvl"] or
+                              gym["rpid"] in SECRETS.RAIDS["additional"]):
             result.append({
                 "type": "raid",
                 "lvl": gym["lvl"],
