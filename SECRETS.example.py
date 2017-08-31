@@ -30,3 +30,8 @@ POKEMON = [
     115,  83, 128,  # Kangaskhan, Farfetch'd, Tauros
     214, 222,  # Heracross Corsola
 ]
+
+RAIDS = {
+    "lvl": 5,  # Show all raids of lvl 5 and up
+    "additional": [3, 248],  # Additionally show Venusaur and Tyranitar raids
+}
