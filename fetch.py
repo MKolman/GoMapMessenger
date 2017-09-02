@@ -102,9 +102,8 @@ def get_all_results():
 def make_message(result):
     teams = {0: "None", 1: "Mystic", 2: "Valor", 3: "Instinct"}
     if result["type"] == "raid":
-        return """{pokemon_name} raid pri {gym_name} ({team_name}{gym_bonus}) do {clock}
-Google maps: {location}
-Če te zanima daj 👍""".format(
+        return ("{pokemon_name} raid pri {gym_name} ({team_name}{gym_bonus}) do"
+                " {clock}\nGoogle maps: {location}").format(
             gym_bonus=" +2 žogi" if len(result["gym"]["memb"]) == 6 else "",
             pokemon_name=result['pokemon']['name'],
             clock=result['until'].time(),
