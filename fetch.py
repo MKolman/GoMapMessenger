@@ -4,6 +4,7 @@ from datetime import datetime
 import requests as req
 
 from pokemon import pokedex
+from gyms import gym_update
 import SECRETS
 
 
@@ -57,6 +58,8 @@ def get_all_results():
         print(resp.content)
         raise
     result = []
+    gym_update(data["gyms"])
+    quit()
     for gym in data["gyms"]:
         if "rpid" in gym and (gym["lvl"] >= SECRETS.RAIDS["lvl"] or
                               gym["rpid"] in SECRETS.RAIDS["additional"]):

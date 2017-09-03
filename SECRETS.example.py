@@ -31,6 +31,9 @@ POKEMON = [
     214, 222,  # Heracross Corsola
 ]
 
+# Something like https://api.myjson.com/bins/2f4k
+GYM_JSON = None
+
 RAIDS = {
     "lvl": 5,  # Show all raids of lvl 5 and up
     "additional": [3, 248],  # Additionally show Venusaur and Tyranitar raids
