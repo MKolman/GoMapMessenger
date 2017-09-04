@@ -39,6 +39,7 @@ def gym_update(gyms, filename="gym_owners.json"):
                     gym_owners['shame'][owner["name"]] = []
                 gym_owners['shame'][owner["name"]].append(prev)
                 gym_owners['shame'][owner["name"]][-1]["defeat_time"] = owner["time"]
+                gym_owners['shame'][owner["name"]][-1]["defeat_team"] = owner["team"]
             gym_owners[gym_id] = owner
 
     if SECRETS.GYM_JSON:
