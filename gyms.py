@@ -14,7 +14,7 @@ def gym_update(gyms, filename="gym_owners.json"):
     for gym in gyms:
         owner = {
             "time": float("inf"),
-            "name": "",
+            "name": None,
             "team": gym["team_id"],
             "gym_name": gym["name"]
         }
@@ -28,15 +28,17 @@ def gym_update(gyms, filename="gym_owners.json"):
         if gym_id not in gym_owners:
             print(owner)
             gym_owners[gym_id] = owner
-        elif gym_owners[gym_id]["time"] != owner["time"] and owner["team"] != 0:
+        elif gym_owners[gym_id]["time"] < owner["time"] and owner["team"] != 0 \
+                and owner["name"] is not None:
             prev = gym_owners[gym_id]
-            print("GYMS: Owner change for {}: from {} to {}".format(
-                  gym_id, prev, owner))
+            # print("GYMS: Owner change for {}: from {} to {}".format(
+            #       gym_id, prev, owner))
             if prev["team"] != owner["team"] and owner["time"] - prev["time"] < 500*60:
                 print("GYMS: ", owner, "is a bad boy")
                 if owner['name'] not in gym_owners['shame']:
                     gym_owners['shame'][owner["name"]] = []
                 gym_owners['shame'][owner["name"]].append(prev)
+                gym_owners['shame'][owner["name"]][-1]["defeat_time"] = owner["time"]
             gym_owners[gym_id] = owner
 
     if SECRETS.GYM_JSON:
