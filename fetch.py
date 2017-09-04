@@ -59,7 +59,6 @@ def get_all_results():
         raise
     result = []
     gym_update(data["gyms"])
-    quit()
     for gym in data["gyms"]:
         if "rpid" in gym and (gym["lvl"] >= SECRETS.RAIDS["lvl"] or
                               gym["rpid"] in SECRETS.RAIDS["additional"]):
