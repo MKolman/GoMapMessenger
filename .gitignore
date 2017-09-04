@@ -4,3 +4,6 @@ __pycache__
 raid_status.json
 /img/tmp_raid.png
 /result_status.json
+*.sublime-project
+*.sublime-workspace
+/gym_owners.json
