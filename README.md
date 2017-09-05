@@ -1,5 +1,5 @@
 # GoMapMessenger
-A bot that uses GoMap.eu data to send it into Facebook messenger chats.
+A bot that sends pokemon raid and rare pokemon data into Facebook messenger chats.
 
 This was only tested with linux and python3.5/python3.6.
 
