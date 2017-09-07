@@ -29,12 +29,13 @@ def gym_update(gyms, filename="gym_owners.json"):
             print(owner)
             gym_owners[gym_id] = owner
         elif gym_owners[gym_id]["time"] < owner["time"] and owner["team"] != 0 \
-                and owner["name"] is not None:
+                and owner["name"] is not None and \
+                gym_owners[gym_id]["team"] != owner["team"]:
             prev = gym_owners[gym_id]
             # print("GYMS: Owner change for {}: from {} to {}".format(
             #       gym_id, prev, owner))
-            if prev["team"] != owner["team"] and owner["time"] - prev["time"] < 500*60:
-                print("GYMS: ", owner, "is a bad boy")
+            if owner["time"] - prev["time"] < 500*60:
+                print("GYMS: ", owner, "is a bad boy", prev)
                 if owner['name'] not in gym_owners['shame']:
                     gym_owners['shame'][owner["name"]] = []
                 gym_owners['shame'][owner["name"]].append(prev)
