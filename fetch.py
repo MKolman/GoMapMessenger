@@ -8,7 +8,7 @@ from gyms import gym_update
 import SECRETS
 
 
-def filter_old_results(results, filename='result_status.json'):
+def filter_old_results(results, filename=None):
     """ Function that filters out all the results that have already been sent
     :params:
         results: all currentltly fetched results
@@ -17,6 +17,8 @@ def filter_old_results(results, filename='result_status.json'):
         All the results in `results` not found in  `filename`. If `filename` does
         not yet exists it is created (with current result data) and an empty array
         is returned."""
+    if filename is None:
+        filename = 'result_status.json'
     new_results = []
     try:
         # If the file exists load data from it

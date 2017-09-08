@@ -43,5 +43,6 @@ def send_all():
 
 if __name__ == "__main__":
     os.environ['TZ'] = SECRETS.TIMEZONE
-    time.tzset()
+    if hasattr(time, "tzset"):
+        time.tzset()
     send_all()

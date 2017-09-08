@@ -61,9 +61,14 @@ should be created on first run.
 You can now call main.py any time you wish to fetch new data and send it to you.
 
 ### Schtasks
-Schtasks is apparently a windows equivalent to Cron. If you figure out how to
-enable it for this program please contact me.
 
-https://technet.microsoft.com/en-us/library/cc725744.aspx
+Add absolute paths (for schtasks) in files main.py (line 35), fetch.py (line
+21), imager.py (lines 8, 16) and gyms.py (line 6)
 
+Create scheduled task in cmd: "schtasks /Create /SC MINUTE /MO 1 /TN Pokemon /TR
+absolute\path\to\python.exe absolute\path\to\main.py"
 
+Run the task quietly:
+https://stackoverflow.com/questions/6568736/how-do-i-set-a-windows-scheduled-task-to-run-in-the-background
+
+Delete the scheduled task: "schtasks /Delete /TN Pokemon"
