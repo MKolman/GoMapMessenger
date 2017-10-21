@@ -48,7 +48,7 @@ def filter_old_results(results, filename=None):
 def get_all_results():
     resp = req.get("https://mapdata2.gomap.eu/mnew.php", params={
         "mid": "0",  # Get full scan
-        "ex": "[" + (",".join([str(i) for i in range(1, 251) if i not in SECRETS.POKEMON])) + "]",
+        "ex": "[" + (",".join([str(i) for i in range(1, 387) if i not in SECRETS.POKEMON])) + "]",
         "w": SECRETS.LOCATION_W,
         "e": SECRETS.LOCATION_E,
         "n": SECRETS.LOCATION_N,
