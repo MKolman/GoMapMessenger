@@ -7,6 +7,7 @@ idna==2.6
 lxml==3.8.0
 olefile==0.44
 Pillow==4.2.1
+pyimgur==0.6.0
 requests==2.18.4
 staticmap==0.5.2
 urllib3==1.22
