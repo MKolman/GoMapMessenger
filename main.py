@@ -2,6 +2,7 @@ import traceback
 
 import os
 import time
+import datetime
 
 import pyimgur
 from fbchat import Client
@@ -44,21 +45,45 @@ def send_all():
             client.sendMessage(exc, **sett['admin'])
 
     elif SECRETS.CHAT['discord']['ACTIVATE']:
-        sett = SECRETS.CHAT['discord']
-        imgur = pyimgur.Imgur(sett['imgur_client_id'])
-        for result in all_results:
-            make_image(result)
-            img = imgur.upload_image("./img/tmp_raid.png")
-            if result['type'] == 'raid':
-                msg = Webhook(sett['raid_webhook'], msg=result['message'], image=img.link)
-            else:
-                msg = Webhook(sett['pokemon_webhook'], msg=result['message'], image=img.link)
+        try:
+            sett = SECRETS.CHAT['discord']
+            imgur = pyimgur.Imgur(sett['imgur_client_id'])
+            for result in all_results:
+                make_image(result)
+                try:
+                    img = imgur.upload_image("./img/tmp_raid.png")
+                except Exception as e:
+                    exc = traceback.format_exc()
+                    print(exc)
+                    txt = "{}: An error while uploading image to imgur:\n{}".format(
+                        datetime.datetime.now().isoformat(), exc)
+                    msg = Webhook(
+                        sett['error_webhook'],
+                        msg=txt,
+                    )
+                    msg.post()
+                    continue
+                url = sett['pokemon_webhook']
+                if result['type'] == 'raid':
+                    url = sett['raid_webhook']
+                msg = Webhook(url, msg=result['message'], image=img.link)
+                msg.post()
+        except Exception as e:
+            exc = traceback.format_exc()
+            print(exc)
+            txt = "{}: An error while sending results:\n{}".format(
+                datetime.datetime.now().isoformat(), exc)
+            msg = Webhook(
+                sett['error_webhook'],
+                msg=txt,
+            )
             msg.post()
 
 
 if __name__ == "__main__":
-    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.0":
-        print("You have to update your SECRETS.py to match those in SECRETS.example.py")
+    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.1":
+        print("You have to update your SECRETS.py to match ")
+        print("to match the structure of SECRETS.example.py")
         exit()
     os.environ['TZ'] = SECRETS.TIMEZONE
     if hasattr(time, "tzset"):
