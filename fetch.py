@@ -81,6 +81,24 @@ def get_all_results():
                 "lon": gym["longitude"],
             })
             result[-1]["message"] = make_message(result[-1])
+        elif "lvl" in gym and gym["lvl"] >= SECRETS.RAIDS["lvl"]:
+            result.append({
+                "type": "raid",
+                "lvl": gym["lvl"],
+                "pokemon": {"name": "T{} egg".format(gym["lvl"])},
+                "pokemon_id": "T{}".format(gym["lvl"]),
+                "gym_name": gym["name"],
+                "loc_id": str(gym["gym_id"]),
+                "until": datetime.fromtimestamp(gym["rb"]),
+                "time": gym["rb"],
+                "team": gym["team_id"],
+                "gym": gym,
+                "location": "https://www.google.si/maps/place/{},{}".format(
+                            gym["latitude"], gym["longitude"]),
+                "lat": gym["latitude"],
+                "lon": gym["longitude"],
+            })
+            result[-1]["message"] = make_message(result[-1])
 
     for poke in data["pokemons"]:
         print(poke)
@@ -98,7 +116,6 @@ def get_all_results():
             "team": 0,
         })
         result[-1]["message"] = make_message(result[-1])
-        print(result[-1]["message"])
 
     return filter_old_results(result)
 
