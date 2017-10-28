@@ -3,6 +3,7 @@ from datetime import datetime
 
 import requests as req
 
+from locations import Districts
 from pokemon import pokedex
 from gyms import gym_update
 import SECRETS
@@ -60,6 +61,7 @@ def get_all_results():
         print(resp.content)
         raise
     result = []
+    districts = Districts()
     gym_update(data["gyms"])
     for gym in data["gyms"]:
         if "rpid" in gym and (gym["lvl"] >= SECRETS.RAIDS["lvl"] or
@@ -80,6 +82,7 @@ def get_all_results():
                 "lat": gym["latitude"],
                 "lon": gym["longitude"],
             })
+            result[-1]["districts"] = districts.get(result[-1]["lon"], result[-1]["lat"])
             result[-1]["message"] = make_message(result[-1])
         elif "lvl" in gym and gym["lvl"] >= SECRETS.RAIDS["lvl"]:
             result.append({
@@ -98,6 +101,7 @@ def get_all_results():
                 "lat": gym["latitude"],
                 "lon": gym["longitude"],
             })
+            result[-1]["districts"] = districts.get(result[-1]["lon"], result[-1]["lat"])
             result[-1]["message"] = make_message(result[-1])
 
     for poke in data["pokemons"]:
@@ -115,6 +119,7 @@ def get_all_results():
             "lon": poke["longitude"],
             "team": 0,
         })
+        result[-1]["districts"] = districts.get(result[-1]["lon"], result[-1]["lat"])
         result[-1]["message"] = make_message(result[-1])
 
     return filter_old_results(result)

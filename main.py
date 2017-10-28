@@ -66,7 +66,12 @@ def send_all():
                 url = sett['pokemon_webhook']
                 if result['type'] == 'raid':
                     url = sett['raid_webhook']
-                msg = Webhook(url, msg=result['message'], image=img.link)
+                tags = ""
+                for name, role_id in result['districts']:
+                    tags += "<@&{}>".format(role_id)
+                if tags:
+                    tags = "\n" + tags
+                msg = Webhook(url, msg=result['message']+tags, image=img.link)
                 msg.post()
         except Exception as e:
             exc = traceback.format_exc()
