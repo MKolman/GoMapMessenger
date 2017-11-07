@@ -117,7 +117,7 @@ def get_all_results():
             "lat": poke["latitude"],
             "lon": poke["longitude"],
             "iv": str(poke["iv"]) if "iv" in poke else "??",
-            "iv_str": str(round(poke["iv"]*100/45, 1)) + "%" if "iv" in poke else "??",
+            "iv_str": str(round(poke["iv"]*100/45, 0)) + "%" if "iv" in poke else "??",
             "cp": str(poke["cp"]) if "cp" in poke else "??",
             "team": 0,
         })
