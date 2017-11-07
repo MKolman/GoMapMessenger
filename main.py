@@ -68,7 +68,7 @@ def send_all():
                     urls = []
                     if result["pokemon_id"] in SECRETS.POKEMON:
                         urls.append(sett['pokemon_webhook'])
-                    if result["iv"].isdigit() and int(result["iv"]) > 41:
+                    if result["iv"].isdigit() and int(result["iv"]) >= 43:
                         urls.append(sett['highiv_webhook'])
 
                 tags = ""
