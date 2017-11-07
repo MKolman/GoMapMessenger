@@ -63,16 +63,22 @@ def send_all():
                     )
                     msg.post()
                     img_link = "https://i.imgur.com/ZdjcRWW.png"
-                url = sett['pokemon_webhook']
-                if result['type'] == 'raid':
-                    url = sett['raid_webhook']
+                urls = [sett['raid_webhook']]
+                if result['type'] == 'spawn':
+                    urls = []
+                    if result["pokemon_id"] in SECRETS.POKEMON:
+                        urls.append(sett['pokemon_webhook'])
+                    if result["iv"].isdigit() and int(result["iv"]) > 41:
+                        urls.append(sett['highiv_webhook'])
+
                 tags = ""
                 for name, role_id in result['districts']:
                     tags += "<@&{}>".format(role_id)
                 if tags:
                     tags = "\n" + tags
-                msg = Webhook(url, msg=result['message']+tags, image=img_link)
-                msg.post()
+                for url in urls:
+                    msg = Webhook(url, msg=result['message']+tags, image=img_link)
+                    msg.post()
         except Exception as e:
             exc = traceback.format_exc()
             print(exc)
@@ -86,7 +92,7 @@ def send_all():
 
 
 if __name__ == "__main__":
-    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.1":
+    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.2":
         print("You have to update your SECRETS.py to match ")
         print("to match the structure of SECRETS.example.py")
         exit()

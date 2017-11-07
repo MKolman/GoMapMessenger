@@ -1,6 +1,6 @@
 from fbchat import ThreadType
 
-VERSION = "2.1"
+VERSION = "2.2"
 
 # ============= GOMAP SETTINGS =============
 # Scanning bounding box
@@ -70,6 +70,8 @@ CHAT = {
         "pokemon_webhook": "<webhook url>",
         # Channel for raids
         "raid_webhook": "<webhook url>",
+        # Channel for high IV pokemon
+        "highiv_webhook": "<webhook url>",
         # Channel for errors
         "error_webhook": "<webhook url>",
         # Imgur API client for image upload. Create one here:

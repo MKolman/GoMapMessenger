@@ -105,8 +105,6 @@ def get_all_results():
             result[-1]["message"] = make_message(result[-1])
 
     for poke in data["pokemons"]:
-        if poke["pokemon_id"] not in SECRETS.POKEMON:
-            continue
         result.append({
             "type": "spawn",
             "name": pokedex[poke["pokemon_id"]]["name"],
@@ -118,13 +116,13 @@ def get_all_results():
                         poke["latitude"], poke["longitude"]),
             "lat": poke["latitude"],
             "lon": poke["longitude"],
-            "iv": poke["iv"] if "iv" in poke else "??",
-            "cp": poke["cp"] if "cp" in poke else "??",
+            "iv": str(poke["iv"]) if "iv" in poke else "??",
+            "iv_str": str(round(poke["iv"]*100/45, 1)) + "%" if "iv" in poke else "??",
+            "cp": str(poke["cp"]) if "cp" in poke else "??",
             "team": 0,
         })
         result[-1]["districts"] = districts.get(result[-1]["lon"], result[-1]["lat"])
         result[-1]["message"] = make_message(result[-1])
-
     return filter_old_results(result)
 
 
@@ -138,6 +136,6 @@ def make_message(result):
             team_name=teams[result['team']],
             **result)
     elif result["type"] == "spawn":
-        return "{name} v divjini do {clock} (IV {iv}, CP {cp})\nGoogle maps: {location}".format(
+        return "{name} v divjini do {clock} (IV {iv_str}, CP {cp})\nGoogle maps: {location}".format(
             clock=result['until'].time(),
             **result)
