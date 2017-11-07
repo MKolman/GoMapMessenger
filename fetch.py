@@ -105,7 +105,6 @@ def get_all_results():
             result[-1]["message"] = make_message(result[-1])
 
     for poke in data["pokemons"]:
-        print(poke)
         result.append({
             "type": "spawn",
             "name": pokedex[poke["pokemon_id"]]["name"],

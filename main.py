@@ -51,7 +51,7 @@ def send_all():
             for result in all_results:
                 make_image(result)
                 try:
-                    img = imgur.upload_image("./img/tmp_raid.png")
+                    img_link = imgur.upload_image("./img/tmp_raid.png").link
                 except Exception as e:
                     exc = traceback.format_exc()
                     print(exc)
@@ -62,7 +62,7 @@ def send_all():
                         msg=txt,
                     )
                     msg.post()
-                    continue
+                    img_link = "https://i.imgur.com/ZdjcRWW.png"
                 url = sett['pokemon_webhook']
                 if result['type'] == 'raid':
                     url = sett['raid_webhook']
@@ -71,7 +71,7 @@ def send_all():
                     tags += "<@&{}>".format(role_id)
                 if tags:
                     tags = "\n" + tags
-                msg = Webhook(url, msg=result['message']+tags, image=img.link)
+                msg = Webhook(url, msg=result['message']+tags, image=img_link)
                 msg.post()
         except Exception as e:
             exc = traceback.format_exc()
