@@ -74,9 +74,8 @@ CHAT = {
         "highiv_webhook": "<webhook url>",
         # Channel for errors
         "error_webhook": "<webhook url>",
-        # Imgur API client for image upload. Create one here:
-        # https://api.imgur.com/oauth2/addclient
-        "imgur_client_id": "<client ID>",
+        # Where will you serve the image to be uploaded
+        "img_upload_url": "<http://your.domain.com/path/to/map.png>",
     }
 }
 

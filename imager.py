@@ -1,4 +1,6 @@
 import staticmap
+import requests
+from SECRETS import CHAT
 
 
 def make_image(raid):
@@ -14,6 +16,16 @@ def make_image(raid):
     m.add_marker(marker)
     img = m.render(zoom=16)
     img.save("img/tmp_raid.png")
+
+
+def upload_image():
+    """
+    Uploads an image hosted in 'img_upload_url' to uploads.im and returns its
+    new url.
+    """
+    url = "http://uploads.im/api?upload=" + CHAT['discord']['img_upload_url']
+    response = requests.get(url)
+    return response.json()['data']['img_url']
 
 
 if __name__ == "__main__":

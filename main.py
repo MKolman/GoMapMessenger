@@ -4,12 +4,11 @@ import os
 import time
 import datetime
 
-import pyimgur
 from fbchat import Client
 from discord import Webhook
 
 from fetch import get_all_results
-from imager import make_image
+from imager import make_image, upload_image
 import SECRETS
 
 
@@ -47,15 +46,14 @@ def send_all():
     elif SECRETS.CHAT['discord']['ACTIVATE']:
         try:
             sett = SECRETS.CHAT['discord']
-            imgur = pyimgur.Imgur(sett['imgur_client_id'])
             for result in all_results:
                 make_image(result)
                 try:
-                    img_link = imgur.upload_image("./img/tmp_raid.png").link
+                    img_link = upload_image()
                 except Exception as e:
                     exc = traceback.format_exc()
                     print(exc)
-                    txt = "{}: An error while uploading image to imgur:\n{}".format(
+                    txt = "{}: An error while uploading image to uploads.im:\n{}".format(
                         datetime.datetime.now().isoformat(), exc)
                     msg = Webhook(
                         sett['error_webhook'],
