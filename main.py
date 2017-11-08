@@ -33,6 +33,10 @@ def send_all():
             return False
         try:
             for result in all_results:
+                if result['type'] == 'spawn' and \
+                        result["pokemon_id"] not in SECRETS.POKEMON and \
+                        result["iv"] not in ["45"]:
+                    continue
                 print(result["message"])
                 make_image(result)
                 client.sendLocalImage("./img/tmp_raid.png", result["message"], **sett['chat'])
