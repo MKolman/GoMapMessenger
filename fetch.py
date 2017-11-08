@@ -136,6 +136,10 @@ def make_message(result):
             team_name=teams[result['team']],
             **result)
     elif result["type"] == "spawn":
-        return "{name} v divjini do {clock} (IV {iv_str}, CP {cp})\nGoogle maps: {location}".format(
+        iv_txt = ''
+        if result['iv'] != "??":
+            iv_txt = ' (IV {iv_str}, CP {cp})'
+        return "{name} v divjini do {clock}{iv_txt}\nGoogle maps: {location}".format(
             clock=result['until'].time(),
+            iv_txt=iv_txt,
             **result)
