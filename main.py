@@ -94,7 +94,7 @@ def send_all():
 
 
 if __name__ == "__main__":
-    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.2":
+    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.3":
         print("You have to update your SECRETS.py to match ")
         print("to match the structure of SECRETS.example.py")
         exit()

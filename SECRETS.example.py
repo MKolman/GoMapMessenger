@@ -1,6 +1,6 @@
 from fbchat import ThreadType
 
-VERSION = "2.2"
+VERSION = "2.3"
 
 # ============= GOMAP SETTINGS =============
 # Scanning bounding box
