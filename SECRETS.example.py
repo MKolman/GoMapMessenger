@@ -1,6 +1,6 @@
 from fbchat import ThreadType
 
-VERSION = "2.3"
+VERSION = "2.4"
 
 # ============= GOMAP SETTINGS =============
 # Scanning bounding box
@@ -76,6 +76,20 @@ CHAT = {
         "error_webhook": "<webhook url>",
         # Where will you serve the image to be uploaded
         "img_upload_url": "<http://your.domain.com/path/to/map.png>",
+
+        # To which pokemon should extra tags be added?
+        "special_ranks": {
+            # For example add a 'starter tag'
+            (3, 6, 9): {  # List your pokemon here
+                "name": "Starter",  # Not used
+                "role_id": "<role_id>",  # It must be a role that anyone can @mention
+            },
+            # Add Unown tag for unown
+            (201,): {  # List your pokemon here
+                "name": "Unown",
+                "role_id": "<role_id>",  # Get role_id in discord with '\@role'
+            }
+        }
     }
 }
 
