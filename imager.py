@@ -3,6 +3,13 @@ import requests
 from SECRETS import CHAT
 
 
+class UploadError(Exception):
+    def __init__(self, message, extra_data=None):
+        super(Exception, self).__init__(message)
+
+        self.extra_data = extra_data
+
+
 def make_image(raid):
     team_colors = ["#e5e5e5", "#0576ee", "#f2160a", "#fad107"]
     lon, lat = raid["lon"], raid["lat"]
@@ -25,7 +32,10 @@ def upload_image():
     """
     url = "http://uploads.im/api?upload=" + CHAT['discord']['img_upload_url']
     response = requests.get(url)
-    return response.json()['data']['img_url']
+    try:
+        return response.json()['data']['img_url']
+    except Exception as exc:
+        raise UploadError(str(exc), extra_data=response)
 
 
 if __name__ == "__main__":

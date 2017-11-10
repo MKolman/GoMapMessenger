@@ -8,7 +8,7 @@ from fbchat import Client
 from discord import Webhook
 
 from fetch import get_all_results
-from imager import make_image, upload_image
+from imager import make_image, upload_image, UploadError
 import SECRETS
 
 
@@ -54,17 +54,18 @@ def send_all():
                 make_image(result)
                 try:
                     img_link = upload_image()
-                except Exception as e:
+                except UploadError as e:
                     exc = traceback.format_exc()
                     print(exc)
-                    txt = "{}: An error while uploading image to uploads.im:\n{}".format(
-                        datetime.datetime.now().isoformat(), exc)
+                    txt = "{}: An error while uploading image:\n{}\n{}".format(
+                        datetime.datetime.now().isoformat(), str(e),
+                        e.extra_data.content)
                     msg = Webhook(
                         sett['error_webhook'],
                         msg=txt,
                     )
                     msg.post()
-                    img_link = "https://i.imgur.com/ZdjcRWW.png"
+                    img_link = None and "https://i.imgur.com/ZdjcRWW.png"
                 urls = [sett['raid_webhook']]
                 tags = ""
                 if result['type'] == 'spawn':
