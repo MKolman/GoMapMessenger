@@ -31,7 +31,11 @@ def upload_image():
     new url.
     """
     url = "http://uploads.im/api?upload=" + CHAT['discord']['img_upload_url']
-    response = requests.get(url)
+    for i in range(5):
+        response = requests.get(url)
+        if response.ok:
+            break
+        print("Upload not successful. Retrying...")
     try:
         return response.json()['data']['img_url']
     except Exception as exc:
