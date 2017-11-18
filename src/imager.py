@@ -25,12 +25,12 @@ def make_image(raid):
     img.save("img/tmp_raid.png")
 
 
-def upload_image():
+def upload_image(img_upload_url):
     """
     Uploads an image hosted in 'img_upload_url' to uploads.im and returns its
     new url.
     """
-    url = "http://uploads.im/api?upload=" + CHAT['discord']['img_upload_url']
+    url = "http://uploads.im/api?upload=" + img_upload_url
     for i in range(5):
         response = requests.get(url)
         if response.ok:

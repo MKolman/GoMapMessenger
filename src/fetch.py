@@ -3,9 +3,9 @@ from datetime import datetime
 
 import requests as req
 
-from locations import Districts
-from pokemon import pokedex
-from gyms import gym_update
+from src.locations import Districts
+from src.pokemon import pokedex
+from src.gyms import gym_update
 import SECRETS
 
 

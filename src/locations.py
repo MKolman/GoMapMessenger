@@ -3,15 +3,24 @@ from shapely.geometry import Polygon, Point
 
 
 class Districts(object):
+    """ Class that loads all city districts data. You can query the districts
+    with GPS coordinates. """
+
     def __init__(self):
         self.districts = dict()
-        with open("districts.geojson") as f:
+        with open("data/districts.geojson") as f:
             data = json.load(f)
             for dist in data["data"]:
                 key = dist["name"], dist["id"]
                 self.districts[key] = Polygon(dist["coordinates"])
 
     def get(self, lon, lat):
+        """ Query districts
+        params:
+            lon, lat: GPS coordinates
+        returns:
+            list of districts at those GPS coordinates
+        """
         result = []
         p = Point([lon, lat])
         for name, poly in self.districts.items():

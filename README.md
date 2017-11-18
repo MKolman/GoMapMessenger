@@ -21,7 +21,7 @@ Setup the virtual environment.
 
 Setup your account
 
-`cp SECRETS.example.py SECRETS.py`
+`cp src/SECRETS.example.py SECRETS.py`
 
 and edit `SECRETS.py` to reflect your needs.
 
