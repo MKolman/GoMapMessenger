@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from itertools import chain
 
 from src import models
 from src import constants
@@ -19,7 +20,9 @@ def add_new_gyms(gym_data):
             models.Gym.gomap_id == gym['gym_id']).first()
         if gym_model is None:
             print('New gym found!', gym['name'])
-            start_timetamp = min(m['time_deploy'] for m in gym['memb'])
+            start_timestamp = gym['ts']
+            for m in gym['memb']:
+                start_timestamp = min(m['time_deploy'], start_timestamp)
             num_new += 1
             gym_model = models.Gym(
                 name=gym['name'],
@@ -27,8 +30,9 @@ def add_new_gyms(gym_data):
                 gps_lon=gym['longitude'],
                 gomap_id=gym['gym_id'],
                 team=constants.Team(gym['team_id']),
-                last_team_change=datetime.fromtimestamp(start_timetamp),
+                last_team_change=datetime.fromtimestamp(start_timestamp),
             )
+            session.add(gym_model)
     session.commit()
     return num_new
 
@@ -79,17 +83,23 @@ def find_criminals(gym_data):
     num_crimes = 0
     session = models.get_session()
     for gym in gym_data:
-        gym_model = session.query(models.Gym).get(gomap_id=gym['gym_id'])
+        gym_model = session.query(models.Gym).filter(
+            models.Gym.gomap_id == gym['gym_id']).first()
         new_team = constants.Team(gym['team_id'])
         if new_team != constants.Team.none and gym_model.team != new_team:
             # We found a team change!
-            timetamp, name = min((m['time_deploy'], m['tn']) for m in gym['memb'])
-            new_time = datetime.fromtimestamp(timetamp)
+            timestamp, name = gym['ts'], None
+            for m in gym['memb']:
+                if timestamp >= m['time_deploy']:
+                    timestamp = m['time_deploy']
+                    name = m['tn']
+            new_time = datetime.fromtimestamp(timestamp)
             standing = new_time - gym_model.last_team_change
             if standing < timedelta(minutes=500):
                 # We found a bad boy!
                 num_crimes += 1
-                trainer = session.query(models.Trainer).get(name=name)
+                trainer = session.query(models.Trainer).filter(
+                    models.Trainer.name == name).first()
                 crime = models.GymCrime(
                     gym_id=gym_model.id,
                     trainer_id=trainer.id,
@@ -111,14 +121,17 @@ def update_gyms(gym_data):
     """
     session = models.get_session()
     for gym in gym_data:
-        gym_model = session.query(models.Gym).get(gomap_id=gym['gym_id'])
+        gym_model = session.query(models.Gym).filter(
+            models.Gym.gomap_id == gym['gym_id']).first()
         new_team = constants.Team(gym['team_id'])
         if new_team != constants.Team.none and gym_model.team != new_team:
             # We found a team change!
-            timetamp, name = min(m['time_deploy'] for m in gym['memb'])
+            timestamp, name = gym['ts']
+            for m in gym['memb']:
+                timestamp = min(m['time_deploy'], timestamp)
 
             gym_model.team = new_team
-            gym_model.last_team_change = datetime.fromtimestamp(timetamp)
+            gym_model.last_team_change = datetime.fromtimestamp(timestamp)
             session.add(gym_model)
 
         # Check who is the gym and who is not
@@ -142,7 +155,8 @@ def update_gyms(gym_data):
         # Add new members
         for member in gym['memb']:
             if member['tn'] not in accounted:
-                trainer = session.query(models.Trainer).get(name=member['tn'])
+                trainer = session.query(models.Trainer).filter(
+                    models.Trainer.name == member['tn']).first()
                 new_occupation = models.GymOccupation(
                     start_time=datetime.fromtimestamp(member['time_deploy']),
                     gym_id=gym_model.id,
@@ -153,10 +167,48 @@ def update_gyms(gym_data):
 
     session.commit()
 
-def update_database(gym_data):
 
-    add_new_gyms(gym_data)
-    add_new_trainers(gym_data)
-    find_criminals(gym_data)
-    update_gyms(gym_data)
-    update_trainers(gym_data)
+def update_trainers(gym_data):
+    """ Update all trainers so that they have the level shown on GoMap
+    params:
+        gym_data (list): a list of objects representing Gyms
+    reutrns:
+        (int): number of trainers with updated level
+    """
+    # First find a list of all trainers
+    updated = set()
+    session = models.get_session()
+    num_new = 0
+    for gym in gym_data:
+        for trainer_data in gym['memb']:
+            if trainer_data['tn'] in updated:
+                continue
+            updated.add(trainer_data['tn'])
+            trainer = session.query(models.Trainer).filter(
+                models.Trainer.name == trainer_data['tn']).first()
+            last_stats = trainer.get_latest_stats(True)
+            if last_stats['Level'].value < trainer_data['tl']:
+                # Someone Leveled up! Woohoo
+                print(trainer['tn'], 'leveled up to', trainer_data['tl'])
+                scanned_time = datetime.fromtimestamp(gym['ts'])
+                num_new += 1
+                stats = models.TrainerStats(
+                    trainer_id=trainer.id,
+                    verified=scanned_time)
+                session.add(stats)
+                badge = models.Badge(
+                    stats=stats,
+                    name='Level',
+                    description='',
+                    value=trainer_data['tl'])
+                session.add(badge)
+    session.commit()
+    return num_new
+
+
+def update_database(gym_data):
+    print('add_new_gyms', add_new_gyms(gym_data))
+    print('add_new_trainers', add_new_trainers(gym_data))
+    print('find_criminals', find_criminals(gym_data))
+    print('update_gyms', update_gyms(gym_data))
+    print('update_trainers', update_trainers(gym_data))

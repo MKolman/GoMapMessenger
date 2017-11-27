@@ -133,7 +133,8 @@ class GymCrime(Base):
 
 def get_session():
     from sqlalchemy.orm import sessionmaker
-    sql_engine = create_engine("sqlite:///gym_status.sqlite")
+    sql_engine = create_engine("sqlite:///gym_status.sqlite3")
+    Base.metadata.create_all(sql_engine)
     DBSession = sessionmaker(bind=sql_engine)
     return DBSession()
 
