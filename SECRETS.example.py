@@ -10,7 +10,7 @@ LOCATION_N = "46.22983200641623"    # North most latitude
 LOCATION_S = "45.870103364048745"   # South most latitude
 
 # All the pokemon you want to be informed about (by their pokedex number)
-POKEMON = [
+POKEMON = {"default": [
     147, 148, 149,  # Dratini family
     246, 247, 248,  # Larvitar family
     179, 180, 181,  # Mareep family
@@ -23,7 +23,10 @@ POKEMON = [
     201,  94,  # Unown, Gengar
     115,  83, 128,  # Kangaskhan, Farfetch'd, Tauros
     214, 222,  # Heracross, Corsola
-]
+], "common": [1, 2, 4, 5, 7, 8]}
+
+ALL_POKEMON = sum(POKEMON.values(), [])
+print(ALL_POKEMON)
 
 # Which raids do you want to report
 RAIDS = {
@@ -67,7 +70,13 @@ CHAT = {
         # Set this to True to enable Discord reporting
         "ACTIVATE": False,
         # Channel for pokemon sightings
-        "pokemon_webhook": "<webhook url>",
+        "pokemon_webhook": {
+            # Channel for default pokemon
+            "default": "<webhook url>",
+            # Channel for common pokemon
+            "common": "<webhook url>",
+            # You can add more channels if you add them to POKEMON
+        },
         # Channel for raids
         "raid_webhook": "<webhook url>",
         # Channel for high IV pokemon

@@ -34,7 +34,7 @@ def send_all():
         try:
             for result in all_results:
                 if result['type'] == 'spawn' and \
-                        result["pokemon_id"] not in SECRETS.POKEMON and \
+                        result["pokemon_id"] not in SECRETS.POKEMON['default'] and \
                         result["iv"] not in ["45"]:
                     continue
                 print(result["message"])
@@ -70,8 +70,9 @@ def send_all():
                 tags = ""
                 if result['type'] == 'spawn':
                     urls = []
-                    if result["pokemon_id"] in SECRETS.POKEMON:
-                        urls.append(sett['pokemon_webhook'])
+                    for key, pokemon in SECRETS.POKEMON.items():
+                        if result["pokemon_id"] in pokemon:
+                            urls.append(sett['pokemon_webhook'][key])
                     if result["iv"].isdigit() and int(result["iv"]) >= 43:
                         urls.append(sett['highiv_webhook'])
 
@@ -99,7 +100,7 @@ def send_all():
 
 
 if __name__ == "__main__":
-    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.4":
+    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.5":
         print("You have to update your SECRETS.py to match ")
         print("to match the structure of SECRETS.example.py")
         exit()
