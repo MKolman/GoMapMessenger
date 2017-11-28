@@ -107,6 +107,7 @@ def get_all_results():
         result.append({
             "type": "spawn",
             "name": pokedex[poke["pokemon_id"]]["name"],
+            "pokemon": pokedex[poke["pokemon_id"]],
             "pokemon_id": poke["pokemon_id"],
             "loc_id": "{}_{}".format(poke["latitude"], poke["longitude"]),
             "time": poke["disappear_time"],
