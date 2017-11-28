@@ -18,13 +18,12 @@ def send_all():
 
     if SECRETS.CHAT['messenger']['ACTIVATE']:
         send_facebook.send(all_results)
-
     if SECRETS.CHAT['discord']['ACTIVATE']:
         send_discord.send(all_results)
 
 
 if __name__ == "__main__":
-    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.4":
+    if not hasattr(SECRETS, "VERSION") or SECRETS.VERSION != "2.5":
         print("You have to update your SECRETS.py to match ")
         print("to match the structure of SECRETS.example.py")
         exit()

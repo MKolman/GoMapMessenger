@@ -28,12 +28,11 @@ def filter_old_results(results, filename=None):
             for result in results:
                 # Only add results not found
                 if result["loc_id"] not in result_data or \
-                        result["time"] != result_data[result["loc_id"]]:
+                        result["time"] > result_data[result["loc_id"]]:
                     new_results.append(result)
+                    # Add newly found results in the result_data
+                    result_data[result["loc_id"]] = result["time"]
 
-            # Add newly found results in the result_data
-            for result in new_results:
-                result_data[result["loc_id"]] = result["time"]
     except FileNotFoundError:
         print("Found no previous result data. Creating now.")
         # If the file does not exist save the result data
@@ -49,7 +48,7 @@ def filter_old_results(results, filename=None):
 def get_all_results():
     resp = req.get("https://mapdata2.gomap.eu/mnew.php", params={
         "mid": "0",  # Get full scan
-        "ex": "[" + (",".join([str(i) for i in range(1, 387) if i not in SECRETS.POKEMON])) + "]",
+        "ex": "[" + (",".join([str(i) for i in range(1, 387) if i not in SECRETS.ALL_POKEMON])) + "]",
         "w": SECRETS.LOCATION_W,
         "e": SECRETS.LOCATION_E,
         "n": SECRETS.LOCATION_N,

@@ -19,8 +19,9 @@ def send(all_results):
             tags = ""
             if result['type'] == 'spawn':
                 urls = []
-                if result["pokemon_id"] in SECRETS.POKEMON:
-                    urls.append(sett['pokemon_webhook'])
+                for key, pokemon in SECRETS.POKEMON.items():
+                    if result["pokemon_id"] in pokemon:
+                        urls.append(sett['pokemon_webhook']['key'])
                 if result["iv"].isdigit() and int(result["iv"]) >= 43:
                     urls.append(sett['highiv_webhook'])
 
@@ -38,8 +39,8 @@ def send(all_results):
                     'avatar_url': 'https://gomap.eu/static/icons/{}.png'.format(result['pokemon_id']),
                     'content': result['message'] + tags,
                 }
-                file = {'file': open('img/tmp_raid.png')}
-                result = requests.post(url, data=data, file=file)
+                file = {'file': open('img/tmp_raid.png', 'rb')}
+                result = requests.post(url, data=data, files=file)
     except Exception as e:
         exc = traceback.format_exc()
         print(exc)

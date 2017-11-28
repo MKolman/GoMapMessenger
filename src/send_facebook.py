@@ -19,7 +19,7 @@ def send(all_results):
     try:
         for result in all_results:
             if result['type'] == 'spawn' and \
-                    result["pokemon_id"] not in SECRETS.POKEMON and \
+                    result["pokemon_id"] not in SECRETS.ALL_POKEMON and \
                     result["iv"] not in ["45"]:
                 continue
             print(result["message"])
