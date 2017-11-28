@@ -83,8 +83,6 @@ CHAT = {
         "highiv_webhook": "<webhook url>",
         # Channel for errors
         "error_webhook": "<webhook url>",
-        # Where will you serve the image to be uploaded
-        "img_upload_url": "<http://your.domain.com/path/to/map.png>",
 
         # To which pokemon should extra tags be added?
         "special_ranks": {

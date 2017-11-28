@@ -1,13 +1,4 @@
 import staticmap
-import requests
-from SECRETS import CHAT
-
-
-class UploadError(Exception):
-    def __init__(self, message, extra_data=None):
-        super(Exception, self).__init__(message)
-
-        self.extra_data = extra_data
 
 
 def make_image(raid):
@@ -25,22 +16,5 @@ def make_image(raid):
     img.save("img/tmp_raid.png")
 
 
-def upload_image(img_upload_url):
-    """
-    Uploads an image hosted in 'img_upload_url' to uploads.im and returns its
-    new url.
-    """
-    url = "http://uploads.im/api?upload=" + img_upload_url
-    for i in range(5):
-        response = requests.get(url)
-        if response.ok:
-            break
-        print("Upload not successful. Retrying...")
-    try:
-        return response.json()['data']['img_url']
-    except Exception as exc:
-        raise UploadError(str(exc), extra_data=response)
-
-
 if __name__ == "__main__":
-    make_image(14.454331, 46.048264, 150)
+    make_image(dict(lon=14.454331, lat=46.048264, pokemon_id=150, team=1))
