@@ -1,31 +1,20 @@
 import traceback
 import datetime
 
+import requests
 from src.discord import Webhook
 
 import SECRETS
-from src.imager import make_image, upload_image, UploadError
+from src.imager import make_image
 
 
 def send(all_results):
     try:
         sett = SECRETS.CHAT['discord']
         for result in all_results:
+            # Make img
             make_image(result)
-            try:
-                img_link = upload_image(sett['img_upload_url'])
-            except UploadError as e:
-                exc = traceback.format_exc()
-                print(exc)
-                txt = "{}: An error while uploading image:\n{}\n{}".format(
-                    datetime.datetime.now().isoformat(), str(e),
-                    e.extra_data.content)
-                msg = Webhook(
-                    sett['error_webhook'],
-                    msg=txt,
-                )
-                msg.post()
-                img_link = None and "https://i.imgur.com/ZdjcRWW.png"
+
             urls = [sett['raid_webhook']]
             tags = ""
             if result['type'] == 'spawn':
@@ -44,8 +33,13 @@ def send(all_results):
             if tags:
                 tags = "\n" + tags
             for url in urls:
-                msg = Webhook(url, msg=result['message']+tags, image=img_link)
-                msg.post()
+                data = {
+                    'username': result['pokemon']['name'],
+                    'avatar_url': 'https://gomap.eu/static/icons/{}.png'.format(result['pokemon_id']),
+                    'content': result['message'] + tags,
+                }
+                file = {'file': open('img/tmp_raid.png')}
+                result = requests.post(url, data=data, file=file)
     except Exception as e:
         exc = traceback.format_exc()
         print(exc)
