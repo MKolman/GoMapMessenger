@@ -21,7 +21,7 @@ def send(all_results):
                 urls = []
                 for key, pokemon in SECRETS.POKEMON.items():
                     if result["pokemon_id"] in pokemon:
-                        urls.append(sett['pokemon_webhook']['key'])
+                        urls.append(sett['pokemon_webhook'][key])
                 if result["iv"].isdigit() and int(result["iv"]) >= 43:
                     urls.append(sett['highiv_webhook'])
 
