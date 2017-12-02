@@ -1,5 +1,6 @@
 import traceback
 import datetime
+import json
 
 import requests
 from src.discord import Webhook
@@ -10,6 +11,7 @@ from src.imager import make_image
 
 def send(all_results):
     try:
+        pokemon_links = json.load(open("data/images.json"))
         sett = SECRETS.CHAT['discord']
         for result in all_results:
             # Make img
@@ -34,9 +36,10 @@ def send(all_results):
             if tags:
                 tags = "\n" + tags
             for url in urls:
+                avatar = pokemon_links.get(str(result['pokemon_id']), "")
                 data = {
                     'username': result['pokemon']['name'],
-                    'avatar_url': 'https://gomap.eu/static/icons/{}.png'.format(result['pokemon_id']),
+                    'avatar_url': avatar,
                     'content': result['message'] + tags,
                 }
                 file = {'file': open('img/tmp_raid.png', 'rb')}
