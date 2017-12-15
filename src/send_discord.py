@@ -43,7 +43,7 @@ def send(all_results):
                     'content': result['message'] + tags,
                 }
                 file = {'file': open('img/tmp_raid.png', 'rb')}
-                result = requests.post(url, data=data, files=file)
+                res = requests.post(url, data=data, files=file)
     except Exception as e:
         exc = traceback.format_exc()
         print(exc)
