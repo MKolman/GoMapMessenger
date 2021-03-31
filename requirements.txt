@@ -4,7 +4,7 @@ chardet==3.0.4
 enum34==1.1.6
 fbchat==1.0.18
 idna==2.6
-lxml==3.8.0
+lxml==4.6.3
 olefile==0.44
 Pillow==4.2.1
 requests==2.18.4
