@@ -10,4 +10,4 @@ Pillow==4.2.1
 requests==2.18.4
 Shapely==1.6.2
 staticmap==0.5.2
-urllib3==1.22
+urllib3==1.26.5
